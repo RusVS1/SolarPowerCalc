@@ -102,12 +102,19 @@ for cell in cells:
         pass
 data.append(rainfall[1:-1])
 
-for i in range(4, 11):
+begin_parse = 4
+end_parse = 11
+
+if len(rows) == 14:
+    begin_parse -= 1
+    end_parse -= 1
+
+for i in range(begin_parse, end_parse):
     raw_data = rows[i].find_elements(By.TAG_NAME, "td") or rows[i].find_elements(By.TAG_NAME, "th")
     raw_data = [raw.text for raw in raw_data]
     data.append(raw_data[1:-1])
 
-hum_data = rows[11].find_elements(By.TAG_NAME, "td") or rows[11].find_elements(By.TAG_NAME, "th")
+hum_data = rows[end_parse].find_elements(By.TAG_NAME, "td") or rows[end_parse].find_elements(By.TAG_NAME, "th")
 humidity = []
 for cell in hum_data:
     digit = cell.get_attribute("innerHTML")
@@ -217,6 +224,7 @@ features = ['sin_month', 'cos_month', 'sin_hour', 'cos_hour', 'sin_day_year', 'c
             'T', 'Po', 'U', 'Ff', 'SZA', 'N', 'W1', 'Nh']
 
 X_test = data_test[features]
+X_test.to_csv('test_data.csv', index=False, encoding="utf-8")
 
 rf_pred = rf_model.predict(X_test)
 rad_pred = pd.DataFrame(rf_pred, columns=['ALLSKY_SFC_SW_DIFF', 'ALLSKY_SFC_SW_DWN'])
