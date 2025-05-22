@@ -147,7 +147,8 @@ class SolarPanelForm(QWidget):
         self.loading_label.setAlignment(Qt.AlignCenter)
         self.loading_label.setFixedSize(100, 100)
 
-        gif_path = os.path.abspath("spinner.gif")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        gif_path  = os.path.join(script_dir, "spinner.gif")
         self.movie = QMovie(gif_path)
         self.movie.setScaledSize(QSize(100, 100))
         self.loading_label.setMovie(self.movie)
